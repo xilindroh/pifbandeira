@@ -1,321 +1,374 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Memorial Descritivo – Bandeira PIF/PAF</title>
-  <style>
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f4f4;color:#222}
-    header{background:#1a237e;color:#fff;padding:32px 40px;text-align:center;border-bottom:6px solid #FFD600}
-    header h1{font-size:2rem;letter-spacing:2px}
-    header p{margin-top:8px;font-size:1rem;opacity:.85}
-    .container{max-width:1100px;margin:40px auto;padding:0 20px}
-    .section{background:#fff;border-radius:10px;box-shadow:0 2px 12px rgba(0,0,0,.08);margin-bottom:32px;overflow:hidden}
-    .section-title{background:#1a237e;color:#fff;padding:14px 24px;font-size:1.1rem;font-weight:700;letter-spacing:1px;display:flex;align-items:center;gap:10px}
-    .section-body{padding:24px}
-    /* CALCULADORA */
-    .calc-grid{display:flex;flex-wrap:wrap;gap:20px;align-items:flex-end;margin-bottom:28px}
-    .calc-field{display:flex;flex-direction:column;gap:6px}
-    .calc-field label{font-size:.85rem;font-weight:700;color:#1a237e;text-transform:uppercase;letter-spacing:.5px}
-    .calc-field input{padding:10px 14px;border:2px solid #1a237e;border-radius:8px;font-size:1.1rem;width:180px;font-weight:700;color:#1a237e}
-    .calc-field input:focus{outline:none;border-color:#FFD600;box-shadow:0 0 0 3px rgba(255,214,0,.3)}
-    .btn-calc{padding:12px 28px;background:#FFD600;color:#1a237e;border:none;border-radius:8px;font-size:1rem;font-weight:900;cursor:pointer;letter-spacing:1px;transition:background .2s;height:46px}
-    .btn-calc:hover{background:#ffc800}
-    .results-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
-    .result-card{background:#f0f4ff;border:1px solid #c5cae9;border-radius:8px;padding:14px 18px}
-    .result-card .r-label{font-size:.78rem;font-weight:700;color:#5c6bc0;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
-    .result-card .r-val{font-size:1.3rem;font-weight:900;color:#b71c1c}
-    .result-card .r-desc{font-size:.78rem;color:#666;margin-top:3px}
-    /* CROQUI */
-    .croqui-wrap{display:flex;justify-content:center;align-items:flex-start;gap:32px;flex-wrap:wrap}
-    .croqui-legend{flex:1;min-width:220px}
-    .croqui-legend h3{font-size:.95rem;font-weight:700;color:#1a237e;margin-bottom:12px;border-bottom:2px solid #FFD600;padding-bottom:6px}
-    .legend-item{display:flex;align-items:center;gap:10px;margin-bottom:10px;font-size:.88rem}
-    .legend-color{width:22px;height:22px;border-radius:4px;border:1px solid #ccc;flex-shrink:0}
-    /* TABELAS */
-    table{width:100%;border-collapse:collapse;font-size:.92rem}
-    th{background:#e8eaf6;color:#1a237e;padding:10px 14px;text-align:left;font-weight:700;border-bottom:2px solid #1a237e}
-    td{padding:9px 14px;border-bottom:1px solid #e0e0e0}
-    tr:last-child td{border-bottom:none}
-    tr:nth-child(even) td{background:#f9f9f9}
-    .val{font-weight:700;color:#b71c1c}
-    /* DESCRITIVO */
-    .descritivo-box{background:#f5f5f5;border-left:5px solid #FFD600;border-radius:6px;padding:20px 24px;font-size:.93rem;line-height:1.8;color:#333}
-    /* OBS */
-    .obs-list{list-style:none;padding:0}
-    .obs-list li{padding:8px 0 8px 28px;position:relative;border-bottom:1px dashed #ddd;font-size:.92rem;line-height:1.6}
-    .obs-list li:last-child{border-bottom:none}
-    .obs-list li::before{content:"✔";color:#FFD600;background:#1a237e;border-radius:50%;font-size:.7rem;width:18px;height:18px;display:flex;align-items:center;justify-content:center;position:absolute;left:0;top:10px}
-    /* CORES */
-    .cores-grid{display:flex;gap:20px;flex-wrap:wrap}
-    .cor-card{display:flex;align-items:center;gap:14px;background:#f9f9f9;border:1px solid #e0e0e0;border-radius:8px;padding:14px 20px;min-width:200px;flex:1}
-    .cor-swatch{width:48px;height:48px;border-radius:8px;border:2px solid #ccc;flex-shrink:0}
-    .cor-info{font-size:.88rem;line-height:1.6}
-    .cor-info strong{display:block;font-size:.95rem;color:#1a237e}
-    /* BOTÃO IMPRIMIR */
-    .btn-print{display:inline-block;margin:0 0 32px;padding:12px 28px;background:#1a237e;color:#fff;border:none;border-radius:8px;font-size:1rem;font-weight:700;cursor:pointer;letter-spacing:1px;transition:background .2s}
-    .btn-print:hover{background:#283593}
-    footer{text-align:center;padding:24px;font-size:.82rem;color:#888;border-top:1px solid #ddd;margin-top:10px}
-    @media(max-width:700px){
-      header h1{font-size:1.3rem}
-      .croqui-wrap{flex-direction:column;align-items:center}
-      .cores-grid{flex-direction:column}
-      svg{max-width:100%;height:auto}
-      .calc-field input{width:140px}
-    }
-    @media print{
-      body{background:#fff}
-      .section{box-shadow:none;border:1px solid #ccc;page-break-inside:avoid}
-      header{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-      .btn-print,.btn-calc{display:none}
-    }
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Bandeira PIF/PAF – Memorial Descritivo</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',Arial,sans-serif;background:#1a1a2e;color:#eee;min-height:100vh}
+
+  header{
+    background:linear-gradient(135deg,#1a237e 0%,#283593 100%);
+    color:#fff;padding:28px 40px;text-align:center;
+    border-bottom:5px solid #FFD600;
+    box-shadow:0 4px 20px rgba(0,0,0,0.4)
+  }
+  header h1{font-size:1.9rem;letter-spacing:3px;text-transform:uppercase}
+  header p{margin-top:6px;font-size:.95rem;opacity:.8;letter-spacing:1px}
+
+  .container{max-width:1200px;margin:0 auto;padding:30px 20px}
+
+  /* ── PREVIEW DA BANDEIRA ── */
+  .flag-preview-wrap{
+    display:flex;justify-content:center;margin-bottom:36px
+  }
+  .flag-preview-box{
+    background:#fff;border-radius:12px;
+    box-shadow:0 8px 40px rgba(0,0,0,0.5);
+    padding:20px;text-align:center
+  }
+  .flag-preview-box p{
+    margin-top:10px;font-size:.8rem;color:#888;font-style:italic
+  }
+
+  /* ── CALCULADORA ── */
+  .calc-section{
+    background:linear-gradient(135deg,#0d1b4b,#1a237e);
+    border-radius:14px;padding:28px 32px;margin-bottom:32px;
+    box-shadow:0 4px 24px rgba(0,0,0,0.4);
+    border:1px solid rgba(255,214,0,0.3)
+  }
+  .calc-section h2{
+    color:#FFD600;font-size:1.2rem;letter-spacing:2px;
+    margin-bottom:20px;text-transform:uppercase;
+    display:flex;align-items:center;gap:10px
+  }
+  .calc-row{display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap}
+  .calc-field{display:flex;flex-direction:column;gap:6px}
+  .calc-field label{
+    font-size:.78rem;font-weight:700;color:#FFD600;
+    text-transform:uppercase;letter-spacing:1px
+  }
+  .calc-input-wrap{display:flex;align-items:center;gap:0}
+  .calc-input-wrap input{
+    padding:12px 16px;
+    background:rgba(255,255,255,0.08);
+    border:2px solid #FFD600;
+    border-radius:10px 0 0 10px;
+    color:#fff;font-size:1.3rem;font-weight:900;
+    width:160px;outline:none;
+    transition:all .2s
+  }
+  .calc-input-wrap input:focus{
+    background:rgba(255,214,0,0.15);
+    box-shadow:0 0 0 3px rgba(255,214,0,0.3)
+  }
+  .unit-badge{
+    background:#FFD600;color:#1a237e;
+    padding:12px 14px;font-weight:900;font-size:1rem;
+    border-radius:0 10px 10px 0;letter-spacing:1px
+  }
+  .btn-calc{
+    padding:13px 28px;
+    background:#FFD600;color:#1a237e;
+    border:none;border-radius:10px;
+    font-size:1rem;font-weight:900;cursor:pointer;
+    letter-spacing:1px;transition:all .2s;
+    text-transform:uppercase
+  }
+  .btn-calc:hover{background:#ffe033;transform:translateY(-2px);box-shadow:0 4px 12px rgba(255,214,0,0.4)}
+
+  /* cards resultado */
+  .results-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+    gap:12px;margin-top:20px
+  }
+  .r-card{
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,214,0,0.2);
+    border-radius:10px;padding:14px 16px;
+    transition:all .2s
+  }
+  .r-card:hover{background:rgba(255,214,0,0.08);border-color:rgba(255,214,0,0.5)}
+  .r-card .rl{font-size:.72rem;color:#aaa;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+  .r-card .rv{font-size:1.2rem;font-weight:900;color:#FFD600}
+  .r-card .rd{font-size:.72rem;color:#888;margin-top:3px}
+
+  /* ── SEÇÕES ── */
+  .section{
+    background:rgba(255,255,255,0.04);
+    border:1px solid rgba(255,255,255,0.1);
+    border-radius:12px;margin-bottom:24px;overflow:hidden
+  }
+  .section-title{
+    background:rgba(26,35,126,0.8);
+    color:#FFD600;padding:14px 24px;
+    font-size:1rem;font-weight:700;letter-spacing:1px;
+    text-transform:uppercase;
+    display:flex;align-items:center;gap:10px;
+    border-bottom:2px solid rgba(255,214,0,0.3)
+  }
+  .section-body{padding:24px}
+
+  /* tabelas */
+  table{width:100%;border-collapse:collapse;font-size:.9rem}
+  th{
+    background:rgba(26,35,126,0.6);color:#FFD600;
+    padding:10px 14px;text-align:left;font-weight:700;
+    border-bottom:2px solid rgba(255,214,0,0.3);
+    text-transform:uppercase;font-size:.8rem;letter-spacing:.5px
+  }
+  td{padding:9px 14px;border-bottom:1px solid rgba(255,255,255,0.07);color:#ddd}
+  tr:last-child td{border-bottom:none}
+  tr:hover td{background:rgba(255,214,0,0.04)}
+  .val{font-weight:700;color:#FFD600}
+
+  /* descritivo */
+  .descritivo-box{
+    background:rgba(0,0,0,0.3);
+    border-left:4px solid #FFD600;
+    border-radius:8px;padding:20px 24px;
+    font-size:.92rem;line-height:1.9;color:#ccc
+  }
+
+  /* obs */
+  .obs-list{list-style:none;padding:0}
+  .obs-list li{
+    padding:9px 0 9px 30px;position:relative;
+    border-bottom:1px solid rgba(255,255,255,0.06);
+    font-size:.9rem;line-height:1.6;color:#ccc
+  }
+  .obs-list li:last-child{border-bottom:none}
+  .obs-list li::before{
+    content:"✔";color:#1a237e;background:#FFD600;
+    border-radius:50%;font-size:.65rem;
+    width:18px;height:18px;
+    display:flex;align-items:center;justify-content:center;
+    position:absolute;left:0;top:11px;font-weight:900
+  }
+
+  /* paleta */
+  .cores-grid{display:flex;gap:16px;flex-wrap:wrap}
+  .cor-card{
+    display:flex;align-items:center;gap:14px;
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.1);
+    border-radius:10px;padding:14px 18px;flex:1;min-width:190px
+  }
+  .cor-swatch{width:52px;height:52px;border-radius:10px;border:2px solid rgba(255,255,255,0.2);flex-shrink:0}
+  .cor-info{font-size:.85rem;line-height:1.7;color:#ccc}
+  .cor-info strong{display:block;color:#FFD600;font-size:.95rem}
+
+  /* botões topo */
+  .top-btns{display:flex;gap:12px;margin-bottom:28px;flex-wrap:wrap}
+  .btn-action{
+    padding:11px 22px;border:none;border-radius:8px;
+    font-size:.9rem;font-weight:700;cursor:pointer;
+    letter-spacing:.5px;transition:all .2s;text-transform:uppercase
+  }
+  .btn-print{background:#1a237e;color:#FFD600;border:2px solid #FFD600}
+  .btn-print:hover{background:#283593}
+
+  footer{
+    text-align:center;padding:24px;font-size:.8rem;
+    color:#555;border-top:1px solid rgba(255,255,255,0.08);margin-top:10px
+  }
+
+  @media(max-width:700px){
+    header h1{font-size:1.2rem}
+    .calc-input-wrap input{width:120px}
+    .cores-grid{flex-direction:column}
+  }
+  @media print{
+    body{background:#fff;color:#000}
+    header{background:#1a237e!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .section{background:#fff;border:1px solid #ccc}
+    .section-title{background:#1a237e!important;color:#FFD600!important}
+    .btn-action,.btn-calc{display:none}
+    .calc-section{background:#f0f0f0!important;color:#000}
+    .r-card{background:#f5f5f5;border:1px solid #ddd}
+    .rv{color:#b71c1c!important}
+    .descritivo-box{background:#f5f5f5;color:#333}
+    td,th{color:#000}
+    .val{color:#b71c1c!important}
+  }
+</style>
 </head>
 <body>
 
 <header>
   <h1>&#128681; Memorial Descritivo de Confec&ccedil;&atilde;o</h1>
-  <p>Bandeira PIF / PAF &nbsp;|&nbsp; Propor&ccedil;&atilde;o 7:10</p>
+  <p>Bandeira PIF / PAF &nbsp;&#9679;&nbsp; Propor&ccedil;&atilde;o 7:10 &nbsp;&#9679;&nbsp; Mar&ccedil;o 2026</p>
 </header>
 
 <div class="container">
 
-  <button class="btn-print" onclick="window.print()">&#128424; Imprimir / Salvar PDF</button>
-
-  <!-- ══════════════════════════════
-       CALCULADORA
-  ══════════════════════════════ -->
-  <div class="section">
-    <div class="section-title">&#129518; Calculadora de Dimens&otilde;es</div>
-    <div class="section-body">
-      <div class="calc-grid">
-        <div class="calc-field">
-          <label>Largura / Base (metros)</label>
-          <input type="number" id="inputLarg" value="2.00" min="0.1" step="0.01" oninput="calcular()"/>
-        </div>
-        <button class="btn-calc" onclick="calcular()">&#9654; Calcular</button>
-      </div>
-      <div class="results-grid" id="resultsGrid"></div>
-    </div>
+  <div class="top-btns">
+    <button class="btn-action btn-print" onclick="window.print()">&#128424; Imprimir / PDF</button>
   </div>
 
-  <!-- ══════════════════════════════
-       CROQUI
-  ══════════════════════════════ -->
-  <div class="section">
-    <div class="section-title">&#128444; Croqui T&eacute;cnico</div>
-    <div class="section-body">
-      <div class="croqui-wrap">
+  <!-- ══════════════════════════════════════
+       PREVIEW DA BANDEIRA ORIGINAL (SVG)
+  ══════════════════════════════════════ -->
+  <div class="flag-preview-wrap">
+    <div class="flag-preview-box">
+      <svg id="flagSVG"
+           viewBox="0 0 1000 700"
+           width="700" height="490"
+           xmlns="http://www.w3.org/2000/svg"
+           style="display:block;border-radius:6px;box-shadow:0 4px 20px rgba(0,0,0,0.5)">
 
-        <div>
-          <!-- SVG viewBox: 700x560, bandeira 600x420, margens para cotas -->
-          <svg id="croquiSVG" width="660" height="500"
-               viewBox="-50 -50 700 560"
-               xmlns="http://www.w3.org/2000/svg"
-               style="border:1px solid #ccc;border-radius:6px;background:#fff">
+        <!-- ── FUNDO ── -->
+        <rect x="0"   y="0" width="500" height="700" fill="#2a3eb1"/>
+        <rect x="500" y="0" width="500" height="700" fill="#e81c1c"/>
 
-            <defs>
-              <!-- setas cotas -->
-              <marker id="a0" markerWidth="8" markerHeight="8" refX="0" refY="4" orient="auto"><path d="M8,0 L0,4 L8,8 Z" fill="#333"/></marker>
-              <marker id="a1" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#333"/></marker>
-              <marker id="aB0" markerWidth="8" markerHeight="8" refX="0" refY="4" orient="auto"><path d="M8,0 L0,4 L8,8 Z" fill="#1a237e"/></marker>
-              <marker id="aB1" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#1a237e"/></marker>
-              <marker id="aR0" markerWidth="8" markerHeight="8" refX="0" refY="4" orient="auto"><path d="M8,0 L0,4 L8,8 Z" fill="#c62828"/></marker>
-              <marker id="aR1" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#c62828"/></marker>
-              <marker id="aY0" markerWidth="8" markerHeight="8" refX="0" refY="4" orient="auto"><path d="M8,0 L0,4 L8,8 Z" fill="#e6b800"/></marker>
-              <marker id="aY1" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#e6b800"/></marker>
-
-              <!--
-                ESCUDO: formato policial com ombros chanfrados
-                Viewbox interno do escudo: 0 0 200 240
-                Pontos:
-                  topo-esq: (20,0) → chanfro esq: (0,30)
-                  lat-esq desce até (0,160) → curva base → (100,240) → curva base → (200,160)
-                  lat-dir sobe até (200,30) → chanfro dir: (180,0) → fecha topo
-              -->
-              <clipPath id="shieldClip">
-                <path d="
-                  M 160,86
-                  L 203,86 L 222,67
-                  L 397,67 L 416,86
-                  L 416,252
-                  Q 416,334 300,356
-                  Q 184,334 184,252
-                  Z
-                "/>
-              </clipPath>
-            </defs>
-
-            <!-- ── FUNDO ── -->
-            <rect x="0"   y="0" width="300" height="420" fill="#1a237e"/>
-            <rect x="300" y="0" width="300" height="420" fill="#c62828"/>
-
-            <!-- linha divisória central tracejada -->
-            <line x1="300" y1="0" x2="300" y2="420"
-                  stroke="rgba(255,255,255,0.4)" stroke-width="1.5" stroke-dasharray="8,5"/>
-
-            <!-- ── LETRAS PIF ── -->
-            <text x="108" y="148" text-anchor="middle" font-size="90" font-weight="900"
-                  font-family="Arial Black,Arial,sans-serif" fill="#c62828">P</text>
-            <text x="108" y="248" text-anchor="middle" font-size="90" font-weight="900"
-                  font-family="Arial Black,Arial,sans-serif" fill="#c62828">I</text>
-            <text x="108" y="348" text-anchor="middle" font-size="90" font-weight="900"
-                  font-family="Arial Black,Arial,sans-serif" fill="#c62828">F</text>
-
-            <!-- ── LETRAS PAF ── -->
-            <text x="492" y="148" text-anchor="middle" font-size="90" font-weight="900"
-                  font-family="Arial Black,Arial,sans-serif" fill="#1a237e">P</text>
-            <text x="492" y="248" text-anchor="middle" font-size="90" font-weight="900"
-                  font-family="Arial Black,Arial,sans-serif" fill="#1a237e">A</text>
-            <text x="492" y="348" text-anchor="middle" font-size="90" font-weight="900"
-                  font-family="Arial Black,Arial,sans-serif" fill="#1a237e">F</text>
-
-            <!-- ── ESCUDO — preenchimento com cores de fundo ── -->
-            <rect x="0"   y="0" width="300" height="420" fill="#1a237e" clip-path="url(#shieldClip)"/>
-            <rect x="300" y="0" width="300" height="420" fill="#c62828" clip-path="url(#shieldClip)"/>
-
-            <!--
-              ESCUDO contorno amarelo
-              Formato: policial/americano com ombros chanfrados
-              Centro: x=300, y=210
-              Largura: 232px (±116 do centro) → x: 184..416
-              Altura: 289px → y: 67..356
-              Chanfros: 19px cada canto superior
-            -->
+        <!-- ══ ESCUDO ══
+             Baseado 100% na imagem original:
+             - topo: reto com dois chanfros diagonais nos ombros
+             - lados: levemente curvados para dentro na cintura
+             - base: ponta arredondada (coração)
+             - centro x=500, y=340
+             - largura ~370, altura ~430
+        -->
+        <defs>
+          <clipPath id="sc">
+            <!-- mesmo path do escudo para clipar o fundo dentro -->
             <path d="
-              M 184,86
-              L 203,67
-              L 397,67
-              L 416,86
-              L 416,252
-              Q 416,334 300,356
-              Q 184,334 184,252
+              M 315,128
+              L 348,95
+              L 652,95
+              L 685,128
+              L 700,200
+              L 700,380
+              C 700,430 680,470 640,510
+              C 610,540 560,570 500,590
+              C 440,570 390,540 360,510
+              C 320,470 300,430 300,380
+              L 300,200
               Z
-            "
-            fill="none" stroke="#FFD600" stroke-width="11" stroke-linejoin="round"/>
+            "/>
+          </clipPath>
+        </defs>
 
-            <!--
-              FERRAMENTAS CRUZADAS
-              Martelo (esquerda, inclinado para direita-baixo ~45°)
-              Picareta (direita, inclinado para esquerda-baixo ~45°)
-              Centro: 300,210
-            -->
+        <!-- fundo azul/vermelho clipado dentro do escudo -->
+        <rect x="0"   y="0" width="500" height="700" fill="#2a3eb1" clip-path="url(#sc)"/>
+        <rect x="500" y="0" width="500" height="700" fill="#e81c1c" clip-path="url(#sc)"/>
 
-            <!-- MARTELO (inclinado /) cabeça no topo-esquerdo -->
-            <g transform="translate(300,210) rotate(-38)">
-              <!-- cabo -->
-              <rect x="-7" y="-10" width="14" height="155" rx="4" fill="#FFD600"/>
-              <!-- cabeça do martelo: bloco retangular -->
-              <rect x="-32" y="-40" width="64" height="32" rx="5" fill="#FFD600"/>
-            </g>
+        <!-- contorno do escudo (amarelo, sem preenchimento) -->
+        <path d="
+          M 315,128
+          L 348,95
+          L 652,95
+          L 685,128
+          L 700,200
+          L 700,380
+          C 700,430 680,470 640,510
+          C 610,540 560,570 500,590
+          C 440,570 390,540 360,510
+          C 320,470 300,430 300,380
+          L 300,200
+          Z
+        "
+        fill="none"
+        stroke="#FFD600"
+        stroke-width="22"
+        stroke-linejoin="round"/>
 
-            <!-- PICARETA (inclinado $| cabeça no topo-direito -->
-            <g transform="translate(300,210) rotate(38)">
-              <!-- cabo -->
-              <rect x="-7" y="-10" width="14" height="155" rx="4" fill="#FFD600"/>
-              <!-- cabeça da picareta: forma assimétrica (ponta + talão) -->
-              <polygon points="-32,-10 32,-10 38,-40 -10,-40" fill="#FFD600"/>
-              <!-- ponta da picareta -->
-              <polygon points="32,-10 38,-40 50,5" fill="#FFD600"/>
-            </g>
+        <!-- ══ FERRAMENTAS ══
+             Martelo: cabo inclinado ~-40°, cabeça retangular no topo-esquerdo
+             Picareta: cabo inclinado ~+40°, cabeça em pico no topo-direito
+             Centro cruzamento: 500, 360
+        -->
 
-            <!-- ══ COTAS ══ -->
-            <!-- Base: 2,00 m -->
-            <line x1="0" y1="450" x2="600" y2="450"
-                  stroke="#333" stroke-width="1.5"
-                  marker-start="url(#a0)" marker-end="url(#a1)"/>
-            <text x="300" y="467" text-anchor="middle" font-size="13" fill="#333" font-weight="bold"
-                  id="cotaBase">2,00 m (base)</text>
+        <!-- MARTELO (inclina para direita-baixo, cabeça vai topo-esquerdo) -->
+        <g transform="translate(500,360) rotate(-40)">
+          <!-- cabo longo -->
+          <rect x="-11" y="-20" width="22" height="250" rx="6" fill="#FFD600"/>
+          <!-- cabeça do martelo: retângulo largo e baixo -->
+          <rect x="-55" y="-75" width="110" height="48" rx="8" fill="#FFD600"/>
+          <!-- face frontal do martelo (bloco) -->
+          <rect x="30"  y="-75" width="30"  height="48" rx="4" fill="#e6a800"/>
+        </g>
 
-            <!-- Altura: 1,40 m -->
-            <line x1="630" y1="0" x2="630" y2="420"
-                  stroke="#333" stroke-width="1.5"
-                  marker-start="url(#a0)" marker-end="url(#a1)"/>
-            <text x="648" y="214" text-anchor="middle" font-size="13" fill="#333" font-weight="bold"
-                  transform="rotate(90,648,214)" id="cotaAltura">1,40 m (altura)</text>
+        <!-- PICARETA (inclina para esquerda-baixo, cabeça vai topo-direito) -->
+        <g transform="translate(500,360) rotate(40)">
+          <!-- cabo longo -->
+          <rect x="-11" y="-20" width="22" height="250" rx="6" fill="#FFD600"/>
+          <!-- corpo principal da picareta -->
+          <rect x="-55" y="-72" width="120" height="42" rx="6" fill="#FFD600"/>
+          <!-- ponta afiada (triângulo estendido para direita) -->
+          <polygon points="65,-72 110,-50 65,-30" fill="#FFD600"/>
+          <!-- talão esquerdo menor -->
+          <rect x="-75" y="-62" width="22" height="30" rx="4" fill="#FFD600"/>
+          <!-- sombra/detalhe -->
+          <rect x="30"  y="-72" width="35" height="42" rx="4" fill="#e6a800" opacity="0.5"/>
+        </g>
 
-            <!-- campo esq 1,00 m -->
-            <line x1="0" y1="-32" x2="300" y2="-32"
-                  stroke="#1a237e" stroke-width="1.2"
-                  marker-start="url(#aB0)" marker-end="url(#aB1)"/>
-            <text x="150" y="-17" text-anchor="middle" font-size="11" fill="#1a237e"
-                  id="cotaEsq">1,00 m</text>
+        <!-- ══ LETRAS PIF (campo azul, cor vermelha) ══ -->
+        <text x="175" y="240"
+              text-anchor="middle"
+              font-size="170" font-weight="900"
+              font-family="Arial Black,Impact,Arial,sans-serif"
+              fill="#e8251c"
+              letter-spacing="-5">P</text>
+        <text x="175" y="420"
+              text-anchor="middle"
+              font-size="170" font-weight="900"
+              font-family="Arial Black,Impact,Arial,sans-serif"
+              fill="#e8251c">I</text>
+        <text x="175" y="600"
+              text-anchor="middle"
+              font-size="170" font-weight="900"
+              font-family="Arial Black,Impact,Arial,sans-serif"
+              fill="#e8251c">F</text>
 
-            <!-- campo dir 1,00 m -->
-            <line x1="300" y1="-32" x2="600" y2="-32"
-                  stroke="#c62828" stroke-width="1.2"
-                  marker-start="url(#aR0)" marker-end="url(#aR1)"/>
-            <text x="450" y="-17" text-anchor="middle" font-size="11" fill="#c62828"
-                  id="cotaDir">1,00 m</text>
+        <!-- ══ LETRAS PAF (campo vermelho, cor azul) ══ -->
+        <text x="825" y="240"
+              text-anchor="middle"
+              font-size="170" font-weight="900"
+              font-family="Arial Black,Impact,Arial,sans-serif"
+              fill="#2a3eb1">P</text>
+        <text x="825" y="420"
+              text-anchor="middle"
+              font-size="170" font-weight="900"
+              font-family="Arial Black,Impact,Arial,sans-serif"
+              fill="#2a3eb1">A</text>
+        <text x="825" y="600"
+              text-anchor="middle"
+              font-size="170" font-weight="900"
+              font-family="Arial Black,Impact,Arial,sans-serif"
+              fill="#2a3eb1">F</text>
 
-            <!-- largura escudo -->
-            <line x1="184" y1="375" x2="416" y2="375"
-                  stroke="#e6b800" stroke-width="1.2"
-                  marker-start="url(#aY0)" marker-end="url(#aY1)"/>
-            <text x="300" y="390" text-anchor="middle" font-size="10" fill="#666"
-                  id="cotaEscLarg">0,77 m</text>
-
-            <!-- altura escudo -->
-            <line x1="165" y1="67" x2="165" y2="356"
-                  stroke="#e6b800" stroke-width="1.2"
-                  marker-start="url(#aY0)" marker-end="url(#aY1)"/>
-            <text x="148" y="215" text-anchor="middle" font-size="10" fill="#666"
-                  transform="rotate(-90,148,215)" id="cotaEscAltura">0,96 m</text>
-
-            <!-- ponto central -->
-            <circle cx="300" cy="210" r="4" fill="white" opacity="0.6"/>
-            <line x1="292" y1="210" x2="308" y2="210" stroke="white" stroke-width="1.5"/>
-            <line x1="300" y1="202" x2="300" y2="218" stroke="white" stroke-width="1.5"/>
-
-          </svg>
-          <p style="text-align:center;font-size:.78rem;color:#888;margin-top:8px">
-            Croqui em escala representativa &mdash; n&atilde;o em escala 1:1
-          </p>
-        </div>
-
-        <!-- Legenda -->
-        <div class="croqui-legend">
-          <h3>Legenda</h3>
-          <div class="legend-item">
-            <div class="legend-color" style="background:#1a237e"></div>
-            <span><strong>Azul Royal</strong><br/>Campo esquerdo + letras PAF</span>
-          </div>
-          <div class="legend-item">
-            <div class="legend-color" style="background:#c62828"></div>
-            <span><strong>Vermelho Vivo</strong><br/>Campo direito + letras PIF</span>
-          </div>
-          <div class="legend-item">
-            <div class="legend-color" style="background:#FFD600;border-color:#aaa"></div>
-            <span><strong>Amarelo Ouro</strong><br/>Escudo e ferramentas</span>
-          </div>
-          <div class="legend-item">
-            <div class="legend-color" style="background:#fff;border:2px dashed #999"></div>
-            <span><strong>Linha tracejada</strong><br/>Divis&atilde;o central</span>
-          </div>
-          <br/>
-          <h3>Pontos de Refer&ecirc;ncia</h3>
-          <div class="legend-item" style="font-size:.84rem">
-            <span>&#128205;</span>
-            <span>Centro da bandeira:<br/><strong id="legCentroH">1,00 m</strong> da borda esq.<br/><strong id="legCentroV">0,70 m</strong> da borda sup.</span>
-          </div>
-          <div class="legend-item" style="font-size:.84rem">
-            <span>&#128205;</span>
-            <span>Centro escudo = centro bandeira</span>
-          </div>
-          <div class="legend-item" style="font-size:.84rem">
-            <span>&#128205;</span>
-            <span>Eixo PIF: <strong id="legPIF">0,50 m</strong> da borda esq.<br/>Eixo PAF: <strong id="legPAF">1,50 m</strong> da borda esq.</span>
-          </div>
-        </div>
-
-      </div>
+      </svg>
+      <p>Visualiza&ccedil;&atilde;o fiel &agrave; imagem original &mdash; propor&ccedil;&atilde;o 7:10</p>
     </div>
   </div>
 
-  <!-- ══════════════════════════════
+  <!-- ══════════════════════════════════════
+       CALCULADORA
+  ══════════════════════════════════════ -->
+  <div class="calc-section">
+    <h2>&#9654; Calculadora de Dimens&otilde;es</h2>
+    <div class="calc-row">
+      <div class="calc-field">
+        <label>Largura da Bandeira</label>
+        <div class="calc-input-wrap">
+          <input type="number" id="inputLarg"
+                 value="2.00" min="0.10" max="20" step="0.01"
+                 oninput="calcular()"/>
+          <div class="unit-badge">m</div>
+        </div>
+      </div>
+      <button class="btn-calc" onclick="calcular()">&#9654; Recalcular</button>
+    </div>
+    <div class="results-grid" id="resultsGrid"></div>
+  </div>
+
+  <!-- ══════════════════════════════════════
        DIMENSÕES GERAIS
-  ══════════════════════════════ -->
+  ══════════════════════════════════════ -->
   <div class="section">
     <div class="section-title">&#128208; Dimens&otilde;es Gerais</div>
     <div class="section-body">
@@ -324,16 +377,15 @@
         <tbody>
           <tr><td>Propor&ccedil;&atilde;o</td><td class="val">7 : 10</td><td>Lei n&ordm; 5.700/1971</td></tr>
           <tr><td>Base (largura)</td><td class="val" id="tBase">2,00 m</td><td>Dimens&atilde;o horizontal total</td></tr>
-          <tr><td>Altura</td><td class="val" id="tAltura">1,40 m</td><td>Base &divide; 10 &times; 7</td></tr>
+          <tr><td>Altura</td><td class="val" id="tAltura">1,40 m</td><td>Largura &divide; 10 &times; 7</td></tr>
           <tr><td>&Aacute;rea total</td><td class="val" id="tArea">2,80 m&sup2;</td><td>Base &times; Altura</td></tr>
+          <tr><td>P&eacute;rimetro</td><td class="val" id="tPerim">6,80 m</td><td>2 &times; (Base + Altura)</td></tr>
         </tbody>
       </table>
     </div>
   </div>
 
-  <!-- ══════════════════════════════
-       CAMPOS DE COR
-  ══════════════════════════════ -->
+  <!-- CAMPOS -->
   <div class="section">
     <div class="section-title">&#127912; Campos de Cor</div>
     <div class="section-body">
@@ -342,119 +394,114 @@
         <tbody>
           <tr>
             <td>Esquerdo</td>
-            <td><span style="display:inline-block;width:14px;height:14px;background:#1a237e;border-radius:3px;vertical-align:middle;margin-right:6px"></span>Azul Royal</td>
-            <td class="val" id="tCampoLarg">1,00 m</td>
-            <td class="val" id="tCampoAlt1">1,40 m</td>
-            <td id="tCampoPosE">0 a 1,00 m da borda esq.</td>
+            <td><span style="display:inline-block;width:14px;height:14px;background:#2a3eb1;border-radius:3px;vertical-align:middle;margin-right:6px"></span>Azul</td>
+            <td class="val" id="cL1">1,00 m</td>
+            <td class="val" id="cA1">1,40 m</td>
+            <td id="cP1">0 &rarr; 1,00 m da borda esq.</td>
           </tr>
           <tr>
             <td>Direito</td>
-            <td><span style="display:inline-block;width:14px;height:14px;background:#c62828;border-radius:3px;vertical-align:middle;margin-right:6px"></span>Vermelho Vivo</td>
-            <td class="val" id="tCampoLarg2">1,00 m</td>
-            <td class="val" id="tCampoAlt2">1,40 m</td>
-            <td id="tCampoPosD">1,00 m a 2,00 m da borda esq.</td>
+            <td><span style="display:inline-block;width:14px;height:14px;background:#e81c1c;border-radius:3px;vertical-align:middle;margin-right:6px"></span>Vermelho</td>
+            <td class="val" id="cL2">1,00 m</td>
+            <td class="val" id="cA2">1,40 m</td>
+            <td id="cP2">1,00 &rarr; 2,00 m da borda esq.</td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
 
-  <!-- ══════════════════════════════
-       ESCUDO
-  ══════════════════════════════ -->
+  <!-- ESCUDO -->
   <div class="section">
     <div class="section-title">&#128737; Escudo Central</div>
     <div class="section-body">
       <table>
         <thead><tr><th>Elemento</th><th>Medida</th><th>Refer&ecirc;ncia</th></tr></thead>
         <tbody>
-          <tr><td>Largura total</td><td class="val" id="eL">0,77 m</td><td>&mdash;</td></tr>
-          <tr><td>Altura total</td><td class="val" id="eA">0,96 m</td><td>&mdash;</td></tr>
-          <tr><td>Espessura do contorno</td><td class="val" id="eC">2,8 cm</td><td>Amarelo ouro</td></tr>
-          <tr><td>Chanfro superior (cada canto)</td><td class="val" id="eCh">7,2 cm</td><td>Corte diagonal nos ombros</td></tr>
+          <tr><td>Largura total</td><td class="val" id="eL">0,74 m</td><td>&mdash;</td></tr>
+          <tr><td>Altura total</td><td class="val" id="eA">0,87 m</td><td>&mdash;</td></tr>
+          <tr><td>Espessura do contorno amarelo</td><td class="val" id="eCont">1,6 cm</td><td>Amarelo ouro</td></tr>
+          <tr><td>Chanfro diagonal (cada ombro)</td><td class="val" id="eChanf">6,6 cm</td><td>Corte nos dois cantos superiores</td></tr>
           <tr><td>Centro horizontal</td><td class="val" id="eCH">1,00 m</td><td>Da borda esquerda</td></tr>
           <tr><td>Centro vertical</td><td class="val" id="eCV">0,70 m</td><td>Da borda superior</td></tr>
-          <tr><td>Borda superior</td><td class="val" id="eBS">0,22 m</td><td>Da borda superior da bandeira</td></tr>
-          <tr><td>Borda inferior</td><td class="val" id="eBI">1,18 m</td><td>Da borda superior da bandeira</td></tr>
-          <tr><td>Borda esquerda</td><td class="val" id="eBE">0,615 m</td><td>Da borda esquerda da bandeira</td></tr>
-          <tr><td>Borda direita</td><td class="val" id="eBD">1,385 m</td><td>Da borda esquerda da bandeira</td></tr>
+          <tr><td>Borda superior do escudo</td><td class="val" id="eBS">0,265 m</td><td>Da borda superior da bandeira</td></tr>
+          <tr><td>Borda inferior do escudo</td><td class="val" id="eBI">1,135 m</td><td>Da borda superior da bandeira</td></tr>
+          <tr><td>Borda esquerda do escudo</td><td class="val" id="eBE">0,630 m</td><td>Da borda esquerda da bandeira</td></tr>
+          <tr><td>Borda direita do escudo</td><td class="val" id="eBD">1,370 m</td><td>Da borda esquerda da bandeira</td></tr>
         </tbody>
       </table>
     </div>
   </div>
 
-  <!-- ══════════════════════════════
-       FERRAMENTAS
-  ══════════════════════════════ -->
+  <!-- FERRAMENTAS -->
   <div class="section">
-    <div class="section-title">&#128296; Ferramentas Cruzadas</div>
+    <div class="section-title">&#128296; Ferramentas Cruzadas (Martelo + Picareta)</div>
     <div class="section-body">
       <table>
         <thead><tr><th>Elemento</th><th>Medida</th><th>Observa&ccedil;&atilde;o</th></tr></thead>
         <tbody>
-          <tr><td>Comprimento de cada cabo</td><td class="val" id="fC">0,50 m</td><td>&mdash;</td></tr>
-          <tr><td>Largura do cabo</td><td class="val" id="fL">3,5 cm</td><td>&mdash;</td></tr>
-          <tr><td>Cabeça do martelo (larg × alt)</td><td class="val" id="fMart">13 × 4 cm</td><td>Bloco retangular</td></tr>
-          <tr><td>Cabeça da picareta (larg × alt)</td><td class="val" id="fPic">16 × 4 cm</td><td>Ponta + tal&atilde;o assim&eacute;trico</td></tr>
-          <tr><td>Cor</td><td class="val">Amarelo Ouro</td><td>&mdash;</td></tr>
-          <tr><td>Disposi&ccedil;&atilde;o</td><td class="val">Cruzadas em "X" ~38°</td><td>Centralizadas no escudo</td></tr>
-          <tr><td>Ocupa&ccedil;&atilde;o interna</td><td class="val">~75%</td><td>Da altura &uacute;til do escudo</td></tr>
-          <tr><td>Margem m&iacute;nima</td><td class="val" id="fMarg">3,5 cm</td><td>At&eacute; o contorno interno</td></tr>
+          <tr><td>Comprimento do cabo</td><td class="val" id="fCabo">0,46 m</td><td>Cada ferramenta</td></tr>
+          <tr><td>Largura do cabo</td><td class="val" id="fLCabo">3,2 cm</td><td>&mdash;</td></tr>
+          <tr><td>Cabe&ccedil;a do martelo (larg &times; alt)</td><td class="val" id="fMart">16 &times; 7 cm</td><td>Bloco retangular</td></tr>
+          <tr><td>Cabe&ccedil;a da picareta (larg &times; alt)</td><td class="val" id="fPic">18 &times; 6 cm</td><td>Ponta afiada + tal&atilde;o</td></tr>
+          <tr><td>&Acirc;ngulo de inclina&ccedil;&atilde;o</td><td class="val">~40&deg;</td><td>Cada ferramenta em rela&ccedil;&atilde;o ao eixo vertical</td></tr>
+          <tr><td>Cor</td><td class="val">Amarelo Ouro #FFD600</td><td>&mdash;</td></tr>
+          <tr><td>Posi&ccedil;&atilde;o do cruzamento</td><td class="val" id="fCruz">centro do escudo</td><td>1,00 m / 0,70 m</td></tr>
+          <tr><td>Margem at&eacute; contorno interno</td><td class="val" id="fMarg">2,5 cm</td><td>M&iacute;nimo</td></tr>
         </tbody>
       </table>
     </div>
   </div>
 
-  <!-- ══════════════════════════════
-       LETRAS
-  ══════════════════════════════ -->
+  <!-- LETRAS -->
   <div class="section">
     <div class="section-title">&#128288; Letras PIF e PAF</div>
     <div class="section-body">
       <table>
         <thead>
-          <tr><th>Grupo</th><th>Letra</th><th>Cor</th><th>Altura</th><th>Centro vertical</th><th>Eixo horizontal</th></tr>
+          <tr><th>Grupo</th><th>Letra</th><th>Cor</th><th>Altura</th><th>Centro Vertical</th><th>Eixo Horizontal</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td rowspan="3" style="font-weight:700;color:#1a237e">PIF<br/><small>(campo azul)</small></td>
-            <td style="font-size:1.1rem;font-weight:900;color:#c62828">P</td>
-            <td>Vermelho</td><td class="val" id="lAltura">22 cm</td>
-            <td class="val" id="lP1">0,32 m</td>
-            <td rowspan="3" class="val" id="lEixoPIF">0,50 m da borda esq.</td>
+            <td rowspan="3" style="font-weight:700;color:#7986cb">PIF<br/><small style="color:#aaa">(campo azul)</small></td>
+            <td style="font-size:1.1rem;font-weight:900;color:#e8251c">P</td>
+            <td>Vermelho</td><td class="val" id="lH1">22 cm</td>
+            <td class="val" id="lPV1">0,24 m da sup.</td>
+            <td rowspan="3" class="val" id="lEixo1">0,35 m da borda esq.</td>
           </tr>
           <tr>
-            <td style="font-size:1.1rem;font-weight:900;color:#c62828">I</td>
-            <td>Vermelho</td><td class="val" id="lAltura2">22 cm</td>
-            <td class="val" id="lI1">0,70 m</td>
+            <td style="font-size:1.1rem;font-weight:900;color:#e8251c">I</td>
+            <td>Vermelho</td><td class="val" id="lH2">22 cm</td>
+            <td class="val" id="lPV2">0,70 m da sup.</td>
           </tr>
           <tr>
-            <td style="font-size:1.1rem;font-weight:900;color:#c62828">F</td>
-            <td>Vermelho</td><td class="val" id="lAltura3">22 cm</td>
-            <td class="val" id="lF1">1,08 m</td>
+            <td style="font-size:1.1rem;font-weight:900;color:#e8251c">F</td>
+            <td>Vermelho</td><td class="val" id="lH3">22 cm</td>
+            <td class="val" id="lPV3">1,16 m da sup.</td>
           </tr>
           <tr>
-            <td rowspan="3" style="font-weight:700;color:#c62828">PAF<br/><small>(campo vermelho)</small></td>
-            <td style="font-size:1.1rem;font-weight:900;color:#1a237e">P</td>
-            <td>Azul</td><td class="val" id="lAltura4">22 cm</td>
-            <td class="val" id="lP2">0,32 m</td>
-            <td rowspan="3" class="val" id="lEixoPAF">1,50 m da borda esq.</td>
+            <td rowspan="3" style="font-weight:700;color:#ef9a9a">PAF<br/><small style="color:#aaa">(campo vermelho)</small></td>
+            <td style="font-size:1.1rem;font-weight:900;color:#2a3eb1">P</td>
+            <td>Azul</td><td class="val" id="lH4">22 cm</td>
+            <td class="val" id="lPV4">0,24 m da sup.</td>
+            <td rowspan="3" class="val" id="lEixo2">1,65 m da borda esq.</td>
           </tr>
           <tr>
-            <td style="font-size:1.1rem;font-weight:900;color:#1a237e">A</td>
-            <td>Azul</td><td class="val" id="lAltura5">22 cm</td>
-            <td class="val" id="lA2">0,70 m</td>
+            <td style="font-size:1.1rem;font-weight:900;color:#2a3eb1">A</td>
+            <td>Azul</td><td class="val" id="lH5">22 cm</td>
+            <td class="val" id="lPV5">0,70 m da sup.</td>
           </tr>
           <tr>
-            <td style="font-size:1.1rem;font-weight:900;color:#1a237e">F</td>
-            <td>Azul</td><td class="val" id="lAltura6">22 cm</td>
-            <td class="val" id="lF2">1,08 m</td>
+            <td style="font-size:1.1rem;font-weight:900;color:#2a3eb1">F</td>
+            <td>Azul</td><td class="val" id="lH6">22 cm</td>
+            <td class="val" id="lPV6">1,16 m da sup.</td>
           </tr>
         </tbody>
       </table>
-      <p style="margin-top:12px;font-size:.85rem;color:#666">
-        * Largura m&eacute;dia: <strong id="lLargMedia">13–15 cm</strong>.
-        Fonte: Bold/Black sem serifa (Arial Black, Impact).
+      <p style="margin-top:12px;font-size:.82rem;color:#888">
+        Largura m&eacute;dia de cada letra: <strong id="lLW" style="color:#FFD600">13–15 cm</strong>.
+        Fonte: <strong>Arial Black / Impact</strong> (bold sem serifa).
+        Letras alinhadas verticalmente, distribu&iacute;das ao longo da altura da bandeira.
       </p>
     </div>
   </div>
@@ -465,16 +512,28 @@
     <div class="section-body">
       <div class="cores-grid">
         <div class="cor-card">
-          <div class="cor-swatch" style="background:#1a237e"></div>
-          <div class="cor-info"><strong>Azul Royal</strong>HEX: #1a237e<br/>RGB: 26, 35, 126<br/>Campo esq. + letras PAF</div>
+          <div class="cor-swatch" style="background:#2a3eb1"></div>
+          <div class="cor-info">
+            <strong>Azul Royal</strong>
+            HEX: #2a3eb1<br/>RGB: 42, 62, 177<br/>
+            Campo esq. + letras PAF
+          </div>
         </div>
         <div class="cor-card">
-          <div class="cor-swatch" style="background:#c62828"></div>
-          <div class="cor-info"><strong>Vermelho Vivo</strong>HEX: #c62828<br/>RGB: 198, 40, 40<br/>Campo dir. + letras PIF</div>
+          <div class="cor-swatch" style="background:#e8251c"></div>
+          <div class="cor-info">
+            <strong>Vermelho Vivo</strong>
+            HEX: #e8251c<br/>RGB: 232, 37, 28<br/>
+            Campo dir. + letras PIF
+          </div>
         </div>
         <div class="cor-card">
-          <div class="cor-swatch" style="background:#FFD600;border-color:#ccc"></div>
-          <div class="cor-info"><strong>Amarelo Ouro</strong>HEX: #FFD600<br/>RGB: 255, 214, 0<br/>Escudo + ferramentas</div>
+          <div class="cor-swatch" style="background:#FFD600;border-color:#888"></div>
+          <div class="cor-info">
+            <strong>Amarelo Ouro</strong>
+            HEX: #FFD600<br/>RGB: 255, 214, 0<br/>
+            Escudo + ferramentas
+          </div>
         </div>
       </div>
     </div>
@@ -485,186 +544,185 @@
     <div class="section-title">&#128203; Acabamentos T&eacute;cnicos</div>
     <div class="section-body">
       <ul class="obs-list">
-        <li>Costuras de acabamento nas 4 bordas com <strong>bainha de 2,0 cm</strong>, refor&ccedil;ada nos cantos.</li>
-        <li>Fixa&ccedil;&atilde;o por ilh&oacute;s met&aacute;licos na borda esquerda, espa&ccedil;ados a cada <strong>35 cm</strong>.</li>
-        <li>Material externo: <strong>nylon 300D ou oxford 300 g/m&sup2;</strong> com tratamento anti-UV.</li>
-        <li>Material interno/decorativo: <strong>poli&eacute;ster 150 g/m&sup2;</strong>.</li>
-        <li>Aplica&ccedil;&atilde;o das artes: <strong>sublima&ccedil;&atilde;o, bordado ou silk-screen</strong>.</li>
-        <li>Costura dupla na linha de divis&atilde;o azul/vermelho para refor&ccedil;o estrutural.</li>
-        <li>Todas as medidas referem-se &agrave; &aacute;rea &uacute;til, <strong>excluindo bainha</strong>.</li>
+        <li>Bainha de <strong>2,0 cm</strong> nas 4 bordas, refor&ccedil;ada nos cantos com pontada dupla.</li>
+        <li>Ilh&oacute;s met&aacute;licos na borda esquerda, espa&ccedil;ados a cada <strong>35 cm</strong> (m&iacute;n. 4 pontos).</li>
+        <li>Uso externo: <strong>nylon 300D ou oxford 300 g/m&sup2;</strong> com tratamento anti-UV.</li>
+        <li>Uso interno/decorativo: <strong>poli&eacute;ster 150 g/m&sup2;</strong>.</li>
+        <li>Arte aplicada por <strong>sublima&ccedil;&atilde;o total</strong> (recomendado) ou silk-screen.</li>
+        <li>Costura dupla na divis&atilde;o azul/vermelho (linha central vertical).</li>
+        <li>O escudo e as ferramentas devem manter <strong>todas as propor&ccedil;&otilde;es</strong> em rela&ccedil;&atilde;o &agrave; largura.</li>
+        <li>Medidas referem-se &agrave; &aacute;rea &uacute;til — <strong>excluindo bainha</strong>.</li>
       </ul>
     </div>
   </div>
 
   <!-- DESCRITIVO -->
   <div class="section">
-    <div class="section-title">&#128196; Descritivo para Fabricante</div>
+    <div class="section-title">&#128196; Descritivo Completo para o Fabricante</div>
     <div class="section-body">
-      <div class="descritivo-box" id="descritivo">
-        Carregando descritivo...
-      </div>
+      <div class="descritivo-box" id="descBox">Carregando...</div>
     </div>
   </div>
 
-</div>
+</div><!-- /container -->
 
 <footer>
-  Memorial Descritivo &ndash; Bandeira PIF/PAF &nbsp;|&nbsp; Propor&ccedil;&atilde;o 7:10 &nbsp;|&nbsp; Mar&ccedil;o / 2026
+  Memorial Descritivo &ndash; Bandeira PIF/PAF &nbsp;&#9679;&nbsp;
+  Propor&ccedil;&atilde;o 7:10 &nbsp;&#9679;&nbsp; Mar&ccedil;o 2026
 </footer>
 
 <script>
-  function fmt(v, dec){ return v.toFixed(dec).replace('.',','); }
+  function f(v,d){ return v.toFixed(d).replace('.',','); }
+  function fm(v){ return f(v,2)+' m'; }
+  function fc(v){ return f(v*100,1)+' cm'; }
 
   function calcular(){
-    const L = parseFloat(document.getElementById('inputLarg').value) || 2.00;
-    const A = L * 7 / 10;
-    const area = (L * A);
+    const L  = parseFloat(document.getElementById('inputLarg').value)||2.0;
+    const A  = L*7/10;
+    const ar = L*A;
+    const pr = 2*(L+A);
 
     // campos
-    const campoL  = L / 2;
+    const cL = L/2;
 
-    // escudo: ~38.5% da largura, proporção ~1.25 altura/largura
-    const escL  = L * 0.385;
-    const escA  = escL * 1.25;
-    const escCH = L / 2;
-    const escCV = A / 2;
-    const escBS = escCV - escA/2;
-    const escBI = escCV + escA/2;
-    const escBE = escCH - escL/2;
-    const escBD = escCH + escL/2;
-    const escCont = L * 0.014;
-    const escChanf = L * 0.036;
+    // escudo — proporções extraídas da imagem original
+    // largura escudo = 37% da base; altura = 62% da altura total
+    const eL   = L*0.37;
+    const eA   = A*0.622;
+    const eCH  = L/2;
+    const eCV  = A/2;
+    const eBS  = eCV - eA/2;
+    const eBI  = eCV + eA/2;
+    const eBE  = eCH - eL/2;
+    const eBD  = eCH + eL/2;
+    const eCt  = L*0.0110;   // espessura contorno
+    const eCh  = L*0.033;    // chanfro
 
     // ferramentas
-    const fCabo = escA * 0.52;
-    const fLarg = L * 0.0175;
-    const fMarg = L * 0.0175;
+    const fCabo = eA*0.53;
+    const fLC   = L*0.016;
+    const fMH   = eL*0.215;  // martelo height
+    const fMW   = eL*0.43;
+    const fPW   = eL*0.485;
+    const fMarg = L*0.0125;
 
-    // letras
-    const lAlt  = A * 0.157;
-    const lEsq  = campoL / 2;
-    const lDir  = L - lEsq;
-    const lP    = A * 0.23;
-    const lI    = A * 0.50;
-    const lF    = A * 0.77;
+    // letras — posição fiel à imagem
+    const lH  = A*0.157;
+    // eixo horizontal: letras ficam ~17.5% da base de cada lado
+    const lEx1 = L*0.175;
+    const lEx2 = L*0.825;
+    // centros verticais: topo=17%, meio=50%, baixo=83%
+    const lV1 = A*0.171;
+    const lV2 = A*0.500;
+    const lV3 = A*0.829;
 
-    // ── atualiza calculadora cards ──
-    const cards = [
-      {l:'Base (largura)',        v: fmt(L,2)+' m',        d:'Dimens&atilde;o horizontal'},
-      {l:'Altura',                v: fmt(A,2)+' m',        d:'Base &divide; 10 &times; 7'},
-      {l:'&Aacute;rea total',     v: fmt(area,2)+' m&sup2;',d:'Base &times; Altura'},
-      {l:'Cada campo (largura)',  v: fmt(campoL,2)+' m',   d:'Metade da base'},
-      {l:'Largura do escudo',     v: fmt(escL,3)+' m',     d:'38,5% da base'},
-      {l:'Altura do escudo',      v: fmt(escA,3)+' m',     d:'125% da largura'},
-      {l:'Contorno do escudo',    v: fmt(escCont*100,1)+' cm', d:'Espessura da borda'},
-      {l:'Chanfro superior',      v: fmt(escChanf*100,1)+' cm',d:'Cada ombro do escudo'},
-      {l:'Altura das letras',     v: fmt(lAlt*100,1)+' cm',d:'P, I, F / P, A, F'},
-      {l:'Comprimento cabo ferr.',v: fmt(fCabo,3)+' m',    d:'Martelo e picareta'},
+    // ── CARDS ──
+    const cards=[
+      {l:'Base (largura)',      v:fm(L),       d:'Horizontal total'},
+      {l:'Altura',              v:fm(A),       d:'Base ÷10×7'},
+      {l:'Área total',          v:f(ar,2)+' m²',d:'Base × Altura'},
+      {l:'Perímetro',           v:fm(pr),      d:'2×(Base+Altura)'},
+      {l:'Cada campo',          v:fm(cL),      d:'Metade da base'},
+      {l:'Largura escudo',      v:fm(eL),      d:'37% da base'},
+      {l:'Altura escudo',       v:fm(eA),      d:'62% da altura'},
+      {l:'Contorno escudo',     v:fc(eCt),     d:'Espessura borda'},
+      {l:'Chanfro ombros',      v:fc(eCh),     d:'Cada canto sup.'},
+      {l:'Altura letras',       v:fc(lH),      d:'P/I/F e P/A/F'},
+      {l:'Cabo ferramenta',     v:fm(fCabo),   d:'Martelo e picareta'},
+      {l:'Eixo letras esq.',    v:fm(lEx1),    d:'Da borda esquerda'},
     ];
-
-    const rg = document.getElementById('resultsGrid');
-    rg.innerHTML = cards.map(c=>`
-      <div class="result-card">
-        <div class="r-label">${c.l}</div>
-        <div class="r-val">${c.v}</div>
-        <div class="r-desc">${c.d}</div>
+    document.getElementById('resultsGrid').innerHTML=
+      cards.map(c=>`<div class="r-card">
+        <div class="rl">${c.l}</div>
+        <div class="rv">${c.v}</div>
+        <div class="rd">${c.d}</div>
       </div>`).join('');
 
-    // ── atualiza cotas SVG ──
-    document.getElementById('cotaBase').textContent   = fmt(L,2)+' m (base)';
-    document.getElementById('cotaAltura').textContent = fmt(A,2)+' m (altura)';
-    document.getElementById('cotaEsq').textContent    = fmt(campoL,2)+' m';
-    document.getElementById('cotaDir').textContent    = fmt(campoL,2)+' m';
-    document.getElementById('cotaEscLarg').textContent= fmt(escL,3)+' m';
-    document.getElementById('cotaEscAltura').textContent= fmt(escA,3)+' m';
+    // ── TABELAS ──
+    document.getElementById('tBase').textContent   = fm(L);
+    document.getElementById('tAltura').textContent = fm(A);
+    document.getElementById('tArea').innerHTML     = f(ar,2)+' m&sup2;';
+    document.getElementById('tPerim').textContent  = fm(pr);
 
-    // ── legenda ──
-    document.getElementById('legCentroH').textContent = fmt(escCH,2)+' m';
-    document.getElementById('legCentroV').textContent = fmt(escCV,2)+' m';
-    document.getElementById('legPIF').textContent     = fmt(lEsq,2)+' m';
-    document.getElementById('legPAF').textContent     = fmt(lDir,2)+' m';
+    document.getElementById('cL1').textContent=fm(cL);
+    document.getElementById('cL2').textContent=fm(cL);
+    document.getElementById('cA1').textContent=fm(A);
+    document.getElementById('cA2').textContent=fm(A);
+    document.getElementById('cP1').innerHTML  ='0 &rarr; '+fm(cL)+' da borda esq.';
+    document.getElementById('cP2').innerHTML  =fm(cL)+' &rarr; '+fm(L)+' da borda esq.';
 
-    // ── tabela geral ──
-    document.getElementById('tBase').textContent   = fmt(L,2)+' m';
-    document.getElementById('tAltura').textContent = fmt(A,2)+' m';
-    document.getElementById('tArea').innerHTML     = fmt(area,2)+' m&sup2;';
+    document.getElementById('eL').textContent   = fm(eL);
+    document.getElementById('eA').textContent   = fm(eA);
+    document.getElementById('eCont').textContent= fc(eCt);
+    document.getElementById('eChanf').textContent=fc(eCh);
+    document.getElementById('eCH').textContent  = fm(eCH);
+    document.getElementById('eCV').textContent  = fm(eCV);
+    document.getElementById('eBS').textContent  = f(eBS,3)+' m';
+    document.getElementById('eBI').textContent  = f(eBI,3)+' m';
+    document.getElementById('eBE').textContent  = f(eBE,3)+' m';
+    document.getElementById('eBD').textContent  = f(eBD,3)+' m';
 
-    // ── campos ──
-    document.getElementById('tCampoLarg').textContent  = fmt(campoL,2)+' m';
-    document.getElementById('tCampoLarg2').textContent = fmt(campoL,2)+' m';
-    document.getElementById('tCampoAlt1').textContent  = fmt(A,2)+' m';
-    document.getElementById('tCampoAlt2').textContent  = fmt(A,2)+' m';
-    document.getElementById('tCampoPosE').textContent  = '0 a '+fmt(campoL,2)+' m da borda esq.';
-    document.getElementById('tCampoPosD').textContent  = fmt(campoL,2)+' m a '+fmt(L,2)+' m da borda esq.';
+    document.getElementById('fCabo').textContent = fm(fCabo);
+    document.getElementById('fLCabo').textContent= fc(fLC);
+    document.getElementById('fMart').innerHTML   = f(fMW*100,0)+'&times;'+f(fMH*100,0)+' cm';
+    document.getElementById('fPic').innerHTML    = f(fPW*100,0)+'&times;'+f(fMH*100*0.86,0)+' cm';
+    document.getElementById('fCruz').textContent = fm(eCH)+' / '+fm(eCV);
+    document.getElementById('fMarg').textContent = fc(fMarg);
 
-    // ── escudo ──
-    document.getElementById('eL').textContent  = fmt(escL,3)+' m';
-    document.getElementById('eA').textContent  = fmt(escA,3)+' m';
-    document.getElementById('eC').textContent  = fmt(escCont*100,1)+' cm';
-    document.getElementById('eCh').textContent = fmt(escChanf*100,1)+' cm';
-    document.getElementById('eCH').textContent = fmt(escCH,2)+' m';
-    document.getElementById('eCV').textContent = fmt(escCV,2)+' m';
-    document.getElementById('eBS').textContent = fmt(escBS,3)+' m';
-    document.getElementById('eBI').textContent = fmt(escBI,3)+' m';
-    document.getElementById('eBE').textContent = fmt(escBE,3)+' m';
-    document.getElementById('eBD').textContent = fmt(escBD,3)+' m';
+    ['lH1','lH2','lH3','lH4','lH5','lH6'].forEach(id=>
+      document.getElementById(id).textContent=fc(lH));
+    document.getElementById('lEixo1').textContent = fm(lEx1)+' da borda esq.';
+    document.getElementById('lEixo2').textContent = fm(lEx2)+' da borda esq.';
+    document.getElementById('lPV1').textContent=f(lV1,3)+' m da sup.';
+    document.getElementById('lPV2').textContent=f(lV2,3)+' m da sup.';
+    document.getElementById('lPV3').textContent=f(lV3,3)+' m da sup.';
+    document.getElementById('lPV4').textContent=f(lV1,3)+' m da sup.';
+    document.getElementById('lPV5').textContent=f(lV2,3)+' m da sup.';
+    document.getElementById('lPV6').textContent=f(lV3,3)+' m da sup.';
+    document.getElementById('lLW').textContent =
+      f(lH*100*0.59,0)+'–'+f(lH*100*0.68,0)+' cm';
 
-    // ── ferramentas ──
-    document.getElementById('fC').textContent    = fmt(fCabo,3)+' m';
-    document.getElementById('fL').textContent    = fmt(fLarg*100,1)+' cm';
-    document.getElementById('fMarg').textContent = fmt(fMarg*100,1)+' cm';
+    // ── DESCRITIVO ──
+    document.getElementById('descBox').innerHTML=`
+      Bandeira nas propor&ccedil;&otilde;es <strong>7:10</strong>,
+      dimens&otilde;es finais <strong>${fm(L)} (largura) &times; ${fm(A)} (altura)</strong>.<br/><br/>
 
-    // ── letras ──
-    ['lAltura','lAltura2','lAltura3','lAltura4','lAltura5','lAltura6']
-      .forEach(id=> document.getElementById(id).textContent = fmt(lAlt*100,1)+' cm');
-    document.getElementById('lEixoPIF').textContent = fmt(lEsq,2)+' m da borda esq.';
-    document.getElementById('lEixoPAF').textContent = fmt(lDir,2)+' m da borda esq.';
-    document.getElementById('lP1').textContent = fmt(lP,3)+' m';
-    document.getElementById('lI1').textContent = fmt(lI,3)+' m';
-    document.getElementById('lF1').textContent = fmt(lF,3)+' m';
-    document.getElementById('lP2').textContent = fmt(lP,3)+' m';
-    document.getElementById('lA2').textContent = fmt(lI,3)+' m';
-    document.getElementById('lF2').textContent = fmt(lF,3)+' m';
+      <strong>Divis&atilde;o:</strong> campo esquerdo em <em>azul (#2a3eb1)</em>
+      e campo direito em <em>vermelho (#e8251c)</em>,
+      cada campo com <strong>${fm(cL)} &times; ${fm(A)}</strong>.
+      Costura dupla de refor&ccedil;o na linha central vertical.<br/><br/>
 
-    // ── descritivo ──
-    document.getElementById('descritivo').innerHTML = `
-      Bandeira confeccionada nas propor&ccedil;&otilde;es <strong>7:10</strong>,
-      dimens&otilde;es finais <strong>${fmt(L,2)} m (largura) &times; ${fmt(A,2)} m (altura)</strong>.<br/><br/>
+      <strong>Escudo:</strong> formato policial centralizado, contorno
+      <em>amarelo ouro (#FFD600)</em>, espessura <strong>${fc(eCt)}</strong>.
+      Dimens&otilde;es: <strong>${fm(eL)} (larg.) &times; ${fm(eA)} (alt.)</strong>.
+      Ombros superiores com chanfros diagonais de <strong>${fc(eCh)}</strong> cada.
+      Base com ponta arredondada em forma de cora&ccedil;&atilde;o.
+      Centro: <strong>${fm(eCH)}</strong> da borda esq. e <strong>${fm(eCV)}</strong> da borda sup.<br/><br/>
 
-      Divis&atilde;o vertical ao meio: campo esquerdo <strong>azul royal</strong>
-      e campo direito <strong>vermelho vivo</strong>,
-      cada campo com <strong>${fmt(campoL,2)} m &times; ${fmt(A,2)} m</strong>.
-      Costura dupla de refor&ccedil;o na divis&atilde;o central.<br/><br/>
+      <strong>Ferramentas:</strong> martelo (cabe&ccedil;a retangular) e picareta
+      (ponta afiada + tal&atilde;o) cruzados em "X" com ~40&deg; de inclina&ccedil;&atilde;o,
+      em amarelo ouro. Cabo de cada ferramenta: <strong>${fm(fCabo)}</strong>,
+      largura <strong>${fc(fLC)}</strong>.
+      Centro do cruzamento coincide com o centro do escudo
+      (${fm(eCH)} da borda esq. / ${fm(eCV)} da borda sup.).<br/><br/>
 
-      Escudo policial de contorno <strong>amarelo ouro</strong> centralizado.
-      Medidas: <strong>${fmt(escL,3)} m (larg.) &times; ${fmt(escA,3)} m (alt.)</strong>.
-      Ombros superiores com chanfros diagonais de <strong>${fmt(escChanf*100,1)} cm</strong>.
-      Base em ponta arredondada. Centro do escudo: <strong>${fmt(escCH,2)} m da borda esq.</strong>
-      e <strong>${fmt(escCV,2)} m da borda sup.</strong>
-      Espessura do contorno: <strong>${fmt(escCont*100,1)} cm</strong>.<br/><br/>
+      <strong>Campo azul — letras P, I, F</strong> em vermelho (#e8251c),
+      eixo a <strong>${fm(lEx1)}</strong> da borda esq.,
+      altura <strong>${fc(lH)}</strong> cada,
+      centros verticais: ${f(lV1,3)} m / ${f(lV2,3)} m / ${f(lV3,3)} m da borda sup.<br/><br/>
 
-      Dentro do escudo: <strong>martelo e picareta cruzados em amarelo ouro</strong>,
-      formando "X" com inclina&ccedil;&atilde;o de ~38&deg;.
-      Cabo de cada ferramenta: <strong>${fmt(fCabo,3)} m</strong>,
-      largura <strong>${fmt(fLarg*100,1)} cm</strong>.
-      Margem m&iacute;nima at&eacute; o contorno: <strong>${fmt(fMarg*100,1)} cm</strong>.<br/><br/>
-
-      Campo azul — letras <strong>P, I, F</strong> em <strong>vermelho</strong>,
-      eixo a <strong>${fmt(lEsq,2)} m da borda esq.</strong>,
-      altura <strong>${fmt(lAlt*100,1)} cm</strong> cada,
-      centros verticais: ${fmt(lP,3)} m / ${fmt(lI,3)} m / ${fmt(lF,3)} m da borda sup.<br/><br/>
-
-      Campo vermelho — letras <strong>P, A, F</strong> em <strong>azul</strong>,
-      eixo a <strong>${fmt(lDir,2)} m da borda esq.</strong>,
+      <strong>Campo vermelho — letras P, A, F</strong> em azul (#2a3eb1),
+      eixo a <strong>${fm(lEx2)}</strong> da borda esq.,
       mesmas alturas e posi&ccedil;&otilde;es verticais.<br/><br/>
 
-      Acabamento: bainha 2 cm nas 4 bordas, ilh&oacute;s a cada 35 cm na borda esquerda.
-      Material: <strong>nylon 300D ou oxford 300 g/m&sup2;</strong> com tratamento anti-UV.
-      Arte por <strong>sublima&ccedil;&atilde;o ou silk-screen</strong>.
+      <strong>Acabamento:</strong> bainha 2 cm nas 4 bordas,
+      ilh&oacute;s a cada 35 cm na borda esquerda.
+      Material: nylon 300D ou oxford 300 g/m&sup2; com tratamento anti-UV.
+      Arte por sublima&ccedil;&atilde;o total ou silk-screen.
     `;
   }
 
-  // roda ao carregar a página
+  // inicializa ao carregar
   calcular();
 </script>
 
